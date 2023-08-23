@@ -15,14 +15,35 @@ const RegisterForm: React.FC = () => {
     const [ buttonDisabled, setButtonDisabled ] = useState(false);
 
     const onRegister = async () => {
+
         try {
-            console.log(user);
-            const response = await instance.post("/user/create", user)
-            console.log(response.data)
+
+            const checkedPassword = verifyPassword();
+
+            if(checkedPassword) {
+
+                console.log(user);
+                const response = await instance.post("/user/create", user)
+                console.log(response.data)
+            } else {
+                alert("Les mots de passe ne sont pas identiques !")
+            }
 
         } catch (error: any) {
             console.log(error.message)
         }
+    }
+
+    const verifyPassword = () => {
+        let verifyPassword;
+
+        if(user.password === confirmPassword) {
+            verifyPassword = true;
+        } else {
+            verifyPassword = false;
+        }
+
+        return verifyPassword;
     }
 
     return (
