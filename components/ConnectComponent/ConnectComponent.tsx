@@ -14,7 +14,7 @@ const ConnectComponents: React.FC = () => {
 
             <div className="border-t-2 border-blue-500 pt-4 w-1/3 m-auto pb-4">
                 {isRegister ? 
-                    <p>Se connectez ?<span onClick={() => setIsRegister(!isRegister)} className="text-blue-500 cursor-pointer">C'est par ici !</span></p> :
+                    <p>Se connectez ?  <span onClick={() => setIsRegister(!isRegister)} className="text-blue-500 cursor-pointer">C'est par ici !</span></p> :
                     <p>Pas encore inscrit ? <span onClick={() => setIsRegister(!isRegister)} className="text-blue-500 cursor-pointer">C'est par ici !</span></p>}       
             </div>
 
