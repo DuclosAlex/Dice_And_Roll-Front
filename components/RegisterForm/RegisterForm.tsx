@@ -1,8 +1,17 @@
 import instance from "@/config/axios/axios";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import { useState } from "react";
+import { motion } from "framer-motion";
 
-const RegisterForm: React.FC = () => {
+interface RegisterFormProps {
+    onSucces: () => void
+}
+
+const RegisterForm: React.FC<RegisterFormProps> = ({ onSucces}) => {
+
+    const [backEndSendError, setBackEndSendError ] = useState('');
+    const [ notificationVisible, setNotificationVisible ] = useState(false);
 
     const initialValues = {
         email: '',
@@ -32,77 +41,111 @@ const RegisterForm: React.FC = () => {
     const onSubmit = async  (values: any) => {
 
         try {
-            console.log("values", values)
             const response = await instance.post('/user/create', values);
-            console.log(response.data)
+            setNotificationVisible(true);
+            setTimeout(() => {
+                setNotificationVisible(false);
+                onSucces();
+            }, 3000)
         } catch(error: any) {
-            console.log(error.message)
+            if(error.response) {
+                setBackEndSendError(error.response.data.error);
+            } else {
+                console.log("erreur côté client", error.message)
+            }
         }
     };
 
     return (
         
-        <Formik 
+        <Formik
             initialValues={initialValues}
             onSubmit={onSubmit}
             validationSchema={RegisterSchema}
         >
             {({errors, touched}) => {
                 return (
-            <Form className="flex flex-col text-center p-8">
-                <label htmlFor="pseudo" className="mb-2">Nom d'utilisateur</label>
-                <Field
-                    type="text"
+            <Form className="flex flex-col p-8 pb-2 w-full relative">
+
+                <motion.div
+                    className="text-center mb-6 bg-blue-600 text-white p-4 rounded-lg absolute top-[10px] right-[-250px]"
+                    initial={{ opacity: 0, y: -10}}
+                    animate={{ opacity: notificationVisible ? 1 : 0, y: 0}}
+                    exit={{ opacity: 0, y: -10}}
+                    transition={{ duration: 0.3}}
+                    >
+                        <p>Inscription réussie</p>
+                    </motion.div>
+
+                <h2 className="text-center text-black text-3xl font-semibold mb-6">Formulaire d'inscription</h2>
+
+                {backEndSendError ? 
+                    <div className="text-center mb-6">
+                        <p className="text-red-600 text-lg">{backEndSendError}</p>
+                    </div>    
+                : null}
+                <div className="w-4/5 flex flex-col m-auto mb-6">
+                    <label htmlFor="pseudo" className="mb-2 text-xl font-semibold">Nom d'utilisateur</label>
+                    <Field
+                        type="text"
+                        name="pseudo"
+                        className={`${ errors.pseudo ? "border-red-500 border-2" : "border-slate-800 border-2"} p-1 rounded-md m-auto w-full`}
+                        />
+                    {touched.pseudo && errors.pseudo ?
+                    <ErrorMessage
                     name="pseudo"
-                    className="border-2 border-slate-800 p-1 rounded-md w-1/3 m-auto"
-                />
-                {touched.pseudo && errors.pseudo ?
-                <ErrorMessage
-                    name="pseudo"
                     component="div"
-                    className="text-red-500"
-                /> : null }
+                    className="text-red-500 mt-2 font-semibold"
+                    /> : null }
+                </div>
 
-                <label htmlFor="email" className="mb-2">Email</label>
-                <Field
-                    type="text"
-                    name="email"
-                    className="border-2 border-slate-800 p-1 rounded-md w-1/3 m-auto"
-                />
-                {touched.email && errors.email ?
-                <ErrorMessage
-                    name="email"
-                    component="div"
-                    className="text-red-500"
-                /> : null }
+                <div className="w-4/5 flex flex-col m-auto mb-6">
+                    <label htmlFor="email" className="mb-2 text-xl font-semibold">Email</label>
+                    <Field
+                        type="text"
+                        name="email"
+                        className={`${ errors.pseudo ? "border-red-500 border-2" : "border-slate-800 border-2"} p-1 rounded-md m-auto w-full`}
+                    />
+                    {touched.email && errors.email ?
+                    <ErrorMessage
+                        name="email"
+                        component="div"
+                        className="text-red-500 mt-2 font-semibold"
+                    /> : null }
+                </div>
 
-                <label htmlFor="password" className="mb-2">Mot de passe</label>
-                <Field
-                    type="password"
+                <div className="w-4/5 flex flex-col m-auto mb-6">
+                    <label htmlFor="password" className="mb-2 text-xl font-semibold">Mot de passe</label>
+                    <Field
+                        type="password"
+                        name="password"
+                        className={`${ errors.pseudo ? "border-red-500 border-2" : "border-slate-800 border-2"} p-1 rounded-md m-auto w-full`}
+                        />
+                    {touched.password && errors.password ?
+                    <ErrorMessage
                     name="password"
-                    className="border-2 border-slate-800 p-1 rounded-md w-1/3 m-auto"
-                />
-                {touched.password && errors.password ?
-                <ErrorMessage
-                    name="password"
                     component="div"
-                    className="text-red-500"
-                /> : null }
+                    className="text-red-500 mt-2 font-semibold"
+                    /> : null }
+                </div>
 
-                <label htmlFor="confirmPassword" className="mb-2">Confirmer le mot de passe</label>
-                <Field
-                    type="password"
-                    name="confirmPassword"
-                    className="border-2 border-slate-800 p-1 rounded-md w-1/3 m-auto"
-                />
-                {touched.confirmPassword && errors.confirmPassword ?
-                <ErrorMessage
+
+                <div className="w-4/5 flex flex-col m-auto mb-6">
+                    <label htmlFor="confirmPassword" className="mb-2 text-xl font-semibold">Confirmer le mot de passe</label>
+                    <Field
+                        type="password"
+                        name="confirmPassword"
+                        className={`${ errors.pseudo ? "border-red-500 border-2" : "border-slate-800 border-2"} p-1 rounded-md m-auto w-full`}
+                        />
+                    {touched.confirmPassword && errors.confirmPassword ?
+                    <ErrorMessage
                     name="confirmPassword"
                     component="div"
-                    className="text-red-500"
-                /> : null }
+                    className="text-red-500 mt-2 font-semibold"
+                    /> : null }
+                </div>
 
-                <button type="submit" className="bg-blue-500 p-3 font-bold text-white rounded-md w-1/3 m-auto mt-4 mb-8">Validez</button>
+                <button type="submit" className="bg-blue-500 p-3 font-bold text-white rounded-md w-full m-auto mt-4">Validez</button>
             </Form>
             );
         }}
