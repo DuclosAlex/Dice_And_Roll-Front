@@ -41,7 +41,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSucces}) => {
     const onSubmit = async  (values: any) => {
 
         try {
-            const response = await instance.post('/user/create', values);
+            await instance.post('/user/create', values);
             setNotificationVisible(true);
             setTimeout(() => {
                 setNotificationVisible(false);
@@ -89,7 +89,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSucces}) => {
                     <Field
                         type="text"
                         name="pseudo"
-                        className={`${ errors.pseudo ? "border-red-500 border-2" : "border-slate-800 border-2"} p-1 rounded-md m-auto w-full`}
+                        className={`${ errors.pseudo && touched.pseudo? "border-red-500 border-2" : "border-slate-800 border-2"} p-1 rounded-md m-auto w-full`}
                         />
                     {touched.pseudo && errors.pseudo ?
                     <ErrorMessage
@@ -104,7 +104,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSucces}) => {
                     <Field
                         type="text"
                         name="email"
-                        className={`${ errors.pseudo ? "border-red-500 border-2" : "border-slate-800 border-2"} p-1 rounded-md m-auto w-full`}
+                        className={`${ errors.email && touched.email ? "border-red-500 border-2" : "border-slate-800 border-2"} p-1 rounded-md m-auto w-full`}
                     />
                     {touched.email && errors.email ?
                     <ErrorMessage
@@ -119,7 +119,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSucces}) => {
                     <Field
                         type="password"
                         name="password"
-                        className={`${ errors.pseudo ? "border-red-500 border-2" : "border-slate-800 border-2"} p-1 rounded-md m-auto w-full`}
+                        className={`${ errors.password && touched.password ? "border-red-500 border-2" : "border-slate-800 border-2"} p-1 rounded-md m-auto w-full`}
                         />
                     {touched.password && errors.password ?
                     <ErrorMessage
@@ -135,7 +135,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSucces}) => {
                     <Field
                         type="password"
                         name="confirmPassword"
-                        className={`${ errors.pseudo ? "border-red-500 border-2" : "border-slate-800 border-2"} p-1 rounded-md m-auto w-full`}
+                        className={`${ errors.confirmPassword && touched.confirmPassword ? "border-red-500 border-2" : "border-slate-800 border-2"} p-1 rounded-md m-auto w-full`}
                         />
                     {touched.confirmPassword && errors.confirmPassword ?
                     <ErrorMessage
