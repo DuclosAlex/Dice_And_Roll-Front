@@ -67,6 +67,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSucces}) => {
                 return (
             <Form className="flex flex-col p-8 pb-2 w-full relative">
 
+                     {/* TODO: Had to work on succes notification} */}
                 <motion.div
                     className="text-center mb-6 bg-blue-600 text-white p-4 rounded-lg absolute top-[10px] right-[-250px]"
                     initial={{ opacity: 0, y: -10}}

@@ -89,6 +89,8 @@ const LoginForm: React.FC = () => {
                             className="text-red-500 mt-2 font-semibold"
                             /> : null }
                         </div>
+
+                        <button type="submit" className="bg-blue-500 p-3 font-bold text-white rounded-md w-full m-auto mt-4">Validez</button>
                     </Form>
                 )
             }}
