@@ -3,11 +3,10 @@
 import LoginForm from "../LoginForm/LoginForm";
 import RegisterForm from "../RegisterForm/RegisterForm";
 import { useState } from "react";
-import { motion as FramerMotion } from 'framer-motion';
 
 const ConnectComponents: React.FC = () => {
 
-    const [ isRegister, setIsRegister ] = useState(true);
+    const [ isRegister, setIsRegister ] = useState(false);
 
     const handleRegisterSucces = () => {
         setIsRegister(false);

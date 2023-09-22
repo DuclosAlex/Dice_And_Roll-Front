@@ -2,11 +2,16 @@ import { Formik, Field, ErrorMessage, Form } from "formik";
 import instance from "@/config/axios/axios";
 import * as Yup from 'yup';
 import { useState } from "react";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { logUser } from "@/redux/slice/userSlice";
+import { useRouter } from "next/navigation";
 
 
 const LoginForm: React.FC = () => {
 
     const [backEndSendError, setBackEndSendError] = useState('');
+    const dispatch = useAppDispatch();
+    const router = useRouter()
 
     const initialValues = {
         email: '',
@@ -31,12 +36,27 @@ const LoginForm: React.FC = () => {
 
         try {
             const response = await instance.post('/user/login', values);
-            console.log(response.data);
+            console.log(response);
+
+            if(response) {
+                dispatch(logUser(response.data.user));
+
+                if(response.data.token) {
+                    console.log(response.data)
+                    localStorage.setItem('jwt', response.data.token);
+                    const token = localStorage.getItem('jwt')
+                    console.log('token', token)
+                    router.push('/menu')
+                }
+            }
+
+
         } catch(error: any) {
             if(error.response) {
            setBackEndSendError(error.response.data.error);     
             } else {
                 setBackEndSendError("Erreur du site, désolé !");
+                console.log(error)
             }
         }
     };
@@ -52,7 +72,7 @@ const LoginForm: React.FC = () => {
                 return (
                     <Form className="flex flex-col p-8 pb-2 w-full">
 
-                        <h2 className="text-center text-black text-3xl font-semibold">Formulaire de connexion</h2>
+                        <h2 className="text-center mb-6 text-black text-3xl font-semibold">Formulaire de connexion</h2>
 
                         {backEndSendError ? 
                             <div className="text-center mb-6">
