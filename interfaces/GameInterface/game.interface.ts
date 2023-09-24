@@ -6,4 +6,6 @@ export interface Game {
     status: string;
     user_id: number;
     id: number;
-}
+};
+
+export type GameList = Game[];

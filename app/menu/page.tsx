@@ -1,8 +1,9 @@
 'use client'
+
 import { useAppSelector } from "@/redux/hooks";
-import Navbar from "./components/Navbar/Navbar"
 import { useEffect, useState } from "react";
 import { User } from "@/interfaces/UserInterace/user.interface";
+import GameAndCharacterContainer from "./components/GameAndCharacterContainer/GameAndCharacterContainer";
 
 export default function Menu() {
 
@@ -18,6 +19,12 @@ export default function Menu() {
 
     useEffect(() => {
         console.log(userInfo);
-    }, [userInfo])
+    }, [userInfo]);
+
+    return (
+        <div className="w-10/12 m-auto mt-10">
+            <GameAndCharacterContainer />
+        </div>
+    )
 
 }
