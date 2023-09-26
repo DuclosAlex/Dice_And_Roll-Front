@@ -22,7 +22,7 @@ export default function Menu() {
     }, [userInfo]);
 
     return (
-        <div className="w-10/12 m-auto mt-10">
+        <div className="w-11/12 m-auto mt-10">
             <GameAndCharacterContainer />
         </div>
     )
