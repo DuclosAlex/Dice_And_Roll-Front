@@ -20,7 +20,7 @@ const Navbar: React.FC = () => {
     }, [])
 
     return (
-        <div className="h-[16vh] w-9/12 m-auto">
+        <div className="h-1/5 w-9/12 m-auto mb-2">
             <h2 className="text-5xl font-bolder tracking-widest text-center pt-8 pb-6 border-b-2 border-black">Dice <span className="text-6xl text-blue-400">&</span> Roll</h2>
             <div className="flex">
                 <ul className="flex h-[20%] w-full items-center justify-left">

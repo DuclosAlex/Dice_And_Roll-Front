@@ -6,7 +6,6 @@ const GameDisplay: React.FC = () => {
 
     const userState = useAppSelector((state) => state.userSlice);
     const [ games, setGames] = useState<GameList>(userState.user[0].games)
-    console.log(games)
 
     return (
         <div className="bg-blue-700 rounded-md  w-full p-4 text-white">
@@ -27,7 +26,7 @@ const GameDisplay: React.FC = () => {
                                 <p>MJ : { game.pseudo === userState.user[0].pseudo ? "Vous" : game.pseudo }</p>
                                 <p>Joueurs max : {game.max_players }</p>
                                 <p>Histoire : { game.description }</p>
-                                <div className="w-1/2 m-auto">
+                                <div className="w-1/2">
                                     <button className="bg-red-500 p-2 rounded-lg mt-2">Rejoindre</button>
                                 </div>
                             </li>

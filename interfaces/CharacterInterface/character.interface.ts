@@ -1,3 +1,5 @@
+import { Stats } from "../StatsInterface/Stats.interface";
+
 export interface Character {
     id: number;
     name: string;
@@ -7,4 +9,5 @@ export interface Character {
     user_id: number;
     game_id: number;
     is_alive: boolean;
+    stats: Stats[]
 }
