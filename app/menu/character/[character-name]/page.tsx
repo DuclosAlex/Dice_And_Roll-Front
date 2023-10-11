@@ -9,38 +9,48 @@ import instance from "@/config/axios/axios";
 
 export default function CharacterPage() {
 
+    //TODO: ADD some event to say to the user that the stats are changed
+
     const searchParams = useSearchParams();
 
     const characterId = searchParams.get('characterId');
     const [ character, setCharacter ] = useState<Character | null>(null);
+    const [ isSubmit, setIsSubmit ] = useState(false)
+
+    const [ formValues, setFormValues ] = useState({
+        strength: 0,
+        constitution: 0,
+        wisdom: 0,
+        charisma: 0,
+        intelligence: 0,
+        dexterity: 0,
+    });
 
     const fetchCharacterData = async (characterId: any) => {
         try {
             const characterData = await instance.get(`/character/getById?id=${characterId}`);
             setCharacter(characterData.data.characterData);
 
+            if(characterData.data.characterData) {
+                const initialStats = characterData.data.characterData.stats[0];
+                setFormValues({
+                    strength: initialStats.strength,
+                    constitution: initialStats.constitution,
+                    wisdom: initialStats.wisdom,
+                    charisma: initialStats.charisma,
+                    intelligence: initialStats.intelligence,
+                    dexterity: initialStats.dexterity,
+                })
+            }
+
         } catch(error) {
             console.log("erreur de fetch", error)
-        }
-    }
-
-    const onSubmit = async (values: any) => {
-
-        try {
-            console.log('hello', values)
-            await instance.post(`/stats/update/${characterId}`, values)
-        } catch(error: any) {
-            console.log(error)
         }
     }
 
     useEffect(() => {
         fetchCharacterData(characterId);
     }, [characterId]);
-
-    useEffect(() => {
-        console.log(character);
-    }, [character])
 
 
     return (
@@ -49,17 +59,19 @@ export default function CharacterPage() {
                 <div className="border-2 border-grey-400 w-2/3 m-auto pb-4 bg-blue-300 pt-4">
                     <h2 className="text-center text-4xl font-extrabold underline mb-8">{character.name}</h2>
                     <Formik
-                        initialValues={{
-                            strength: character.stats[0].strength,
-                            constitution: character.stats[0].constitution,
-                            wisdom: character.stats[0].wisdom,
-                            charisma: character.stats[0].charisma,
-                            intelligence: character.stats[0].intelligence,
-                            dexterity: character.stats[0].dexterity,
+                        initialValues={formValues}
+                        onSubmit={async (values, actions) => {
+                            try {
+                                const result = await instance.put(`/stats/update/${characterId}`, values);
+
+                                actions.resetForm({ values: { ...values}})
+                                setIsSubmit(false)
+                            } catch(error) {
+                                console.log(error)
+                            }
                         }}
-                        onSubmit={onSubmit}
                     >
-                        {({errors, touched}) => {
+                        {({errors, touched, setFieldValue , isSubmitting}) => {
                             return (
                                 <Form className="flex flex-col">
                                     <div className="border-grey-200 border-2 w-4/5 m-auto p-2">
@@ -72,6 +84,13 @@ export default function CharacterPage() {
                                                     type="number"
                                                     name="strength"
                                                     className="w-12 text-center"
+                                                    onChange={(e: any) => {
+                                                        if(isSubmit === false) {
+                                                            setIsSubmit(true)
+                                                        }
+                                                        const newValue = e.target.value;
+                                                        setFieldValue("strength", newValue);
+                                                    }}
                                                     />
                                             </div>
                                         </div>
@@ -117,7 +136,14 @@ export default function CharacterPage() {
                                         </div>
                                     </div>
 
-                                    <button type="submit" className="bg-blue-600 p-3 font-bold text-white rounded-md m-auto mt-4">Validez les changements</button>
+                                    <button 
+                                        type="submit"
+                                        className={`p-3 font-bold text-white rounded-md m-auto mt-4
+                                            ${isSubmit ? "bg-blue-600" : "bg-gray-300" }`}
+                                        disabled={!isSubmit}
+                                    >
+                                        Validez les changements
+                                    </button>
                                 </Form>
                             )
                         }}
@@ -134,5 +160,4 @@ export default function CharacterPage() {
             )}
         </div>
     )
-
 }
