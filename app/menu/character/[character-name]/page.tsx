@@ -31,7 +31,6 @@ export default function CharacterPage() {
         try {
             const characterData = await instance.get(`/character/getById?id=${characterId}`);
             setCharacter(characterData.data.characterData);
-            console.log(characterData)
 
             if(characterData.data.characterData) {
                 const initialStats = characterData.data.characterData.stats[0];
@@ -64,7 +63,7 @@ export default function CharacterPage() {
                         initialValues={formValues}
                         onSubmit={async (values, actions) => {
                             try {
-                                const result = await instance.put(`/stats/update/${characterId}`, values);
+                                await instance.put(`/stats/update/${characterId}`, values);
 
                                 actions.resetForm({ values: { ...values}})
                                 setIsSubmit(false)
@@ -73,7 +72,7 @@ export default function CharacterPage() {
                             }
                         }}
                     >
-                        {({errors, touched, setFieldValue , isSubmitting}) => {
+                        {({errors, touched, setFieldValue}) => {
                             return (
                                 <Form className="flex flex-col">
                                     <div className="border-grey-200 border-2 w-4/5 m-auto p-2">
@@ -186,7 +185,7 @@ export default function CharacterPage() {
                         }}
                     </Formik>
 
-                    <SkillsDisplay skills={character.skills}/>
+                    <SkillsDisplay skills={character.skills} characterId={characterId}/>
                 </div>
             ) : (
                 <div>

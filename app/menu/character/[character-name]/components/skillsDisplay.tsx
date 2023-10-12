@@ -1,17 +1,32 @@
 import instance from "@/config/axios/axios";
 import { Skills } from "@/interfaces/SkillsInterface/skills.interface";
 import { Formik, Field, Form, ErrorMessage} from 'formik';
+import { useState } from "react";
 
 interface SkillsDisplayProps {
     skills: Skills[];
+    characterId: string | null;
 }
 
-const SkillsDisplay: React.FC<SkillsDisplayProps> = ({skills})=> {
+const SkillsDisplay: React.FC<SkillsDisplayProps> = ({skills, characterId})=> {
 
+    const [localSkills, setLocalSkills ] = useState(skills)
 
     const initialValues = {
         name: "",
-        description: ","
+        description: ""
+    }
+
+    const deleteSkill = async (id: number) => {
+        try {
+
+            await instance.delete(`/skill/delete/${id}`);
+            // Return new array with the skill THAT didn't match the id of the skill deleted
+            const updatedSkills = localSkills.filter((skill) => skill.id !== id);
+            setLocalSkills(updatedSkills);
+        } catch(error) {
+            console.log(error)
+        }
     }
 
 
@@ -19,24 +34,35 @@ const SkillsDisplay: React.FC<SkillsDisplayProps> = ({skills})=> {
         <div className="border-grey-200 border-2 w-4/5 mt-4 m-auto p-2">
             <h3 className="text-center text-3xl font-bold mb-8">Compétences</h3>
 
-            { skills ? (
-                skills.map((skill: Skills, index: number) => {
-
-                    return (
-                        <div key={index} className="flex justify-around bg-blue-200 w-1/2 m-auto p-4">
-                            <h4 className="p-4 text-lg font-bold">{skill.name}</h4>
-                            <p className="p-4 text-lg font-bold">{skill.description }</p>
-                            <button className="p-4 bg-red-500 rounded-md text-white text-md" type="submit">Supprimer</button>
+            {localSkills ? (
+                localSkills.map((skill: Skills, index: number) => (
+                    <div key={index} className="w-2/3 m-auto mb-4 border-gray-200 border-4">
+                        <div className="flex items-center justify-between bg-blue-200 p-4 ">
+                            <div className="w-1/2">
+                                <h4 className="p-4 text-lg font-bold">{skill.name}</h4>
+                                <p className="p-4 text-lg font-bold">{skill.description}</p>
+                            </div>
+                                <button className="p-4 bg-red-500 rounded-md text-white text-md"
+                                 type="submit"
+                                 onClick={() => deleteSkill(skill.id)}>
+                                    Supprimer
+                                </button>
                         </div>
-                    )
-                })
+                    </div>
+                ))
             ) : <p className="text-center">Aucune compétence encore !</p>}
 
             <Formik
                 initialValues={initialValues}
                 onSubmit={async (values, actions) => {
                     try {
-                        const result = await instance.post(`/skills/create`, values);
+                        const result = await instance.post(`/skill/create`, {
+                            skill: values,
+                            characterId: characterId
+                        });
+
+                        const newSkills = [ ...localSkills, result.data ];
+                        setLocalSkills(newSkills);
 
                         actions.resetForm({values : initialValues})
                     } catch(error) {
@@ -46,6 +72,7 @@ const SkillsDisplay: React.FC<SkillsDisplayProps> = ({skills})=> {
             
             >
                 {({errors, touched}) => {
+                    //TODO: Add to handle error and interne UX of the component
                     return (
                         <Form className="mt-8 justify-around border-2 border-gray-300 w-4/5 m-auto py-4 flex">
                             <div className="flex flex-col">
