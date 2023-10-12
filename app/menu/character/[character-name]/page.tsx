@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Character } from "@/interfaces/CharacterInterface/character.interface";
 import instance from "@/config/axios/axios";
+import SkillsDisplay from "./components/skillsDisplay";
 
 export default function CharacterPage() {
 
@@ -30,6 +31,7 @@ export default function CharacterPage() {
         try {
             const characterData = await instance.get(`/character/getById?id=${characterId}`);
             setCharacter(characterData.data.characterData);
+            console.log(characterData)
 
             if(characterData.data.characterData) {
                 const initialStats = characterData.data.characterData.stats[0];
@@ -100,6 +102,13 @@ export default function CharacterPage() {
                                                 type="number"
                                                 name="dexterity"
                                                 className="w-12 text-center"
+                                                onChange={(e: any) => {
+                                                    if(isSubmit === false) {
+                                                        setIsSubmit(true)
+                                                    }
+                                                    const newValue = e.target.value;
+                                                    setFieldValue("dexterity", newValue);
+                                                }}
                                             />
                                         </div>
                                         <div className="w-4/5 flex justify-around p-4">
@@ -108,6 +117,13 @@ export default function CharacterPage() {
                                                 type="number"
                                                 name="constitution"
                                                 className="w-12 text-center"
+                                                onChange={(e: any) => {
+                                                    if(isSubmit === false) {
+                                                        setIsSubmit(true)
+                                                    }
+                                                    const newValue = e.target.value;
+                                                    setFieldValue("constitution", newValue);
+                                                }}
                                             />
                                         </div>
                                         <div className="w-4/5 flex justify-around p-4">
@@ -116,6 +132,13 @@ export default function CharacterPage() {
                                                 type="number"
                                                 name="wisdom"
                                                 className="w-12 text-center"
+                                                onChange={(e: any) => {
+                                                    if(isSubmit === false) {
+                                                        setIsSubmit(true)
+                                                    }
+                                                    const newValue = e.target.value;
+                                                    setFieldValue("wisdom", newValue);
+                                                }}
                                             />
                                         </div>
                                         <div className="w-4/5 flex justify-around p-4">
@@ -124,6 +147,13 @@ export default function CharacterPage() {
                                                 type="number"
                                                 name="intelligence"
                                                 className="w-12 text-center"
+                                                onChange={(e: any) => {
+                                                    if(isSubmit === false) {
+                                                        setIsSubmit(true)
+                                                    }
+                                                    const newValue = e.target.value;
+                                                    setFieldValue("intelligence", newValue);
+                                                }}
                                             />
                                         </div>
                                         <div className="w-4/5 flex justify-around p-4">
@@ -132,6 +162,13 @@ export default function CharacterPage() {
                                                 type="number"
                                                 name="charisma"
                                                 className="w-12 text-center"
+                                                onChange={(e: any) => {
+                                                    if(isSubmit === false) {
+                                                        setIsSubmit(true)
+                                                    }
+                                                    const newValue = e.target.value;
+                                                    setFieldValue("charisma", newValue);
+                                                }}
                                             />
                                         </div>
                                     </div>
@@ -148,6 +185,8 @@ export default function CharacterPage() {
                             )
                         }}
                     </Formik>
+
+                    <SkillsDisplay skills={character.skills}/>
                 </div>
             ) : (
                 <div>
