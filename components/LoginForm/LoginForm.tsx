@@ -5,7 +5,8 @@ import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { logUser } from "@/redux/slice/userSlice";
 import { useRouter } from "next/navigation";
-
+import Cookies from 'js-cookie';
+import { useCookies } from "react-cookie";
 
 const LoginForm: React.FC = () => {
 
@@ -36,16 +37,13 @@ const LoginForm: React.FC = () => {
 
         try {
             const response = await instance.post('/user/login', values);
-            console.log(response);
 
             if(response) {
                 dispatch(logUser(response.data.user));
 
-                if(response.data.token) {
-                    console.log(response.data)
-                    localStorage.setItem('jwt', response.data.token);
-                    const token = localStorage.getItem('jwt')
-                    console.log('token', token)
+                if(response.data.success === true) {   
+                    //TODO : add a expiration date to the cookie
+                    Cookies.set('jwt', response.data.token);
                     router.push('/menu')
                 }
             }

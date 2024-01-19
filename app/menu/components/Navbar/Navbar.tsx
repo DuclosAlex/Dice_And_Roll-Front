@@ -9,15 +9,15 @@ import { User } from "@/interfaces/UserInterace/user.interface";
 
 const Navbar: React.FC = () => {
 
-    const userState = useAppSelector((state) => state.userSlice);
-    const [ userInfo, setUserInfo ] = useState<User | null>(null)
-
+    const userState = useAppSelector((state) => state.userSlice.user[0]);
+    const [ userInfo, setUserInfo ] = useState<User | null>(null);
 
     useEffect(() => {
-        if(userState.user[0]) {
-            setUserInfo(userState.user[0]);
+        if(userState) {
+
+            setUserInfo(userState);
         }
-    }, [])
+    }, [userState])
 
     return (
         <div className="h-1/5 w-9/12 m-auto mb-2">
@@ -31,7 +31,7 @@ const Navbar: React.FC = () => {
                         <Link href="/find-a-game">Trouver une partie</Link>
                     </li>
                     <li className="p-4 text-2xl text-blue-500 font-semibold">
-                        <Link href="/new-game">Créer une partie</Link>
+                        <Link href="/menu/create-game">Créer une partie</Link>
                     </li>
                     <li className="p-4 text-2xl text-blue-500 font-semibold">
                         <Link href="/blog">Blog</Link>

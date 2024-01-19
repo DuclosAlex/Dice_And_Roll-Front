@@ -6,6 +6,7 @@ const GameDisplay: React.FC = () => {
 
     const userState = useAppSelector((state) => state.userSlice);
     const [ games, setGames] = useState<GameList>(userState.user[0].games)
+    console.log(games)
 
     return (
         <div className="bg-blue-700 rounded-md  w-full p-4 text-white">
@@ -19,7 +20,7 @@ const GameDisplay: React.FC = () => {
                 { games.map((game: Game, index: number) => {
 
                     return (
-                        <ul className={`flex text-xl justify-around ${index % 2 === 0 ? "bg-blue-400" : ""}`}>
+                        <ul key={game.id} className={`flex text-xl justify-around ${index % 2 === 0 ? "bg-blue-400" : ""}`}>
                             <li className="w-1/3 p-2">{game.pseudo}</li>
                             <li className="w-1/3 p-2">{game.status}</li>
                             <li className="w-1/3 p-2">

@@ -1,34 +1,13 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Dice & Roll Front-end
 
-## Getting Started
+## Présentation 
 
-First, run the development server:
+Le but de ce projet est d'expérimenter en reproduisant le projet de fin de formation réalisé lors de ma formation chez O'clock. En équipe de 5  à l'époque, nous avons construit une plateforme permettant aux joueurs de JDR ( Jeux de Rôle ) de se retrouver pour participer à des parties en ligne. 
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+Les utilisateurs doivent pouvoir s'inscrire, créer des parties ( salon où se retrouvent les joueurs), gérer les fiches de leurs personnages, jouer les parties, accèder à un blog, etc... 
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Pour le projet originel, j'ai principalement travaillé sur le back-end (https://github.com/DuclosAlex/MyAmiDice_BACK), et particulièrement sur les scripts SQL et sur l'application express avec la création de coreController et coreModel qui ont été transmis à tous les controlleurs et models. J'ai aussi travaillé sur les fonctions SQL et aidés au CSS à la fin du dernier sprint. 
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Cette fois-ci il s'agit de tout faire seul, en utilisant Next.js pour le front ( la doc officielle de React le recommandant ), afin de maîtriser ce framework, tout en améliorant la partie du back-end que j'ai repris. 
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Les principales nouveautés seront de construire tout le front en utilisant tailwind et de géré l'authentification côté front. Et pour le back, je devrais travailler à l'optimisation de ce qui existe déjà, à inclure l'ajout d'image par les utilisateurs en BDD, à gérér l'authentification et la sécurité, ainsi qu'à mettre en place le serveur webSocket pour les interactions en direct comme le chat lors des parties. 
